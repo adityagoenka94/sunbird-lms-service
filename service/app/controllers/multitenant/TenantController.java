@@ -11,6 +11,7 @@ import controllers.multitenant.validator.TenantRequestValidator;
 public class TenantController extends BaseController {
 
     public Promise<Result> createTenant() {
+        ProjectLogger.log("createTenant called.", LoggerEnum.DEBUG.name());
         return handleRequest(
                 CaminoActorOperations.CREATE_TENANT.getValue(),
                 request().body().asJson(),
@@ -22,6 +23,7 @@ public class TenantController extends BaseController {
     }
 
     public Promise<Result> updateTenantInfo() {
+        ProjectLogger.log("updateTenantInfo called.", LoggerEnum.DEBUG.name());
         return handleRequest(
                 CaminoActorOperations.UPDATE_TENANT_INFO.getValue(),
                 request().body().asJson(),
@@ -33,6 +35,7 @@ public class TenantController extends BaseController {
     }
 
     public Promise<Result> updateTenantPreferenceDetails() {
+        ProjectLogger.log("updateTenantPreferenceDetails called.", LoggerEnum.DEBUG.name());
         return handleRequest(
                 CaminoActorOperations.UPDATE_TENANT_PREFERENCE_DETAILS.getValue(),
                 request().body().asJson(),
@@ -45,26 +48,26 @@ public class TenantController extends BaseController {
 
 
     public F.Promise<Result> getTenantDetailsByHomeUrl(String homeUrl) {
-        return handleGetTenantDetails(CaminoActorOperations.GET_TENANT_INFO.getValue(), homeUrl);
-    }
+        ProjectLogger.log("getTenantDetails called.", LoggerEnum.DEBUG.name());
 
-//    public F.Promise<Result> search() {
-//        return handleSearchRequest(
-//                ActorOperations.COMPOSITE_SEARCH.getValue(),
-//                request().body().asJson(),
-//                orgRequest -> {
-//                    new BaseRequestValidator().validateSearchRequest((Request) orgRequest);
-//                    return null;
-//                },
-//                null,
-//                null,
-//                getAllRequestHeaders(request()),
-//                ProjectUtil.EsType.organisation.getTypeName());
-//    }
+        try {
+            Request request = createAndInitRequest(CaminoActorOperations.GET_TENANT_INFO.getValue());
+            request.put(JsonKey.HOME_URL, homeUrl);
+
+            new TenantRequestValidator().validateGetTenantDetails(request);
+
+            return actorResponseHandler(getActorRef(), request, timeout, null, request());
+        } catch (Exception e) {
+            ProjectLogger.log("getTenantDetails: exception = ", e);
+
+            return F.Promise.pure(createCommonExceptionResponse(e, request()));
+        }
+    }
 
 
     // this function uses validateCreateTenantRequest() function for basic validation of request parameters as the request is same as the create
     public Promise<Result> addTenantPreferenceDetails() {
+        ProjectLogger.log("addTenantPreferenceDetails called.", LoggerEnum.DEBUG.name());
         return handleRequest(
                 CaminoActorOperations.ADD_TENANT_PREFERENCE_DETAILS.getValue(),
                 request().body().asJson(),
@@ -75,19 +78,4 @@ public class TenantController extends BaseController {
                 getAllRequestHeaders(request()));
     }
 
-    private Promise<Result> handleGetTenantDetails(String operation, String homeUrl) {
-        final String requestedFields = request().getQueryString(JsonKey.FIELDS);
-
-        return handleRequest(
-                operation,
-                null,
-                (req) -> {
-                    Request request = (Request) req;
-                    request.getContext().put(JsonKey.FIELDS, requestedFields);
-                    return null;
-                },
-                homeUrl,
-                JsonKey.HOME_URL,
-                false);
-    }
 }
