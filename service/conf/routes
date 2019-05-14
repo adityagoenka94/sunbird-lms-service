@@ -186,3 +186,15 @@ GET    /v1/textbook/toc/download/:textbookId           @controllers.textbook.Tex
 # OTP APIs
 POST /v1/otp/generate @controllers.otp.OtpController.generateOTP()
 POST /v1/otp/verify   @controllers.otp.OtpController.verifyOTP()
+
+# Start
+
+# Api's for Camino Instance
+# MULTI-TENANT API
+POST /v1/tenant/create  @controllers.multitenant.TenantController.createTenant()
+PATCH /v1/tenant/info/update  @controllers.multitenant.TenantController.updateTenantInfo()
+PATCH /v1/tenant/preference/update  @controllers.multitenant.TenantController.updateTenantPreferenceDetails()
+GET /v1/tenant/read/:homeUrl  @controllers.multitenant.TenantController.getTenantDetailsByHomeUrl(homeUrl:String)
+POST /v1/tenant/preference/add  @controllers.multitenant.TenantController.addTenantPreferenceDetails()
+
+# Stop

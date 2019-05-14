@@ -228,7 +228,19 @@ public class Global extends GlobalSettings {
       env = JsonKey.LOCATION;
     } else if (uri.startsWith("/v1/otp")) {
       env = "otp";
-    } else {
+    }
+
+    // start
+    //changes for Camino Instance
+
+    // initialising env value when tenant api's are used
+    else if (uri.startsWith("/v1/tenant")) {
+      env = "tenant";
+    }
+
+    //stop
+
+    else {
       env = "miscellaneous";
     }
     return env;

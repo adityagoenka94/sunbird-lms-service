@@ -32,6 +32,18 @@ public class RequestInterceptor {
     restrictedUriList.add("/v1/note/delete");
     restrictedUriList.add("/v1/content/state/update");
 
+    // start
+    //changes for Camino Instance
+
+    // making tenant APIs as private access for Camino Instance
+    //private access requires x-authenticated-user-token as header for api access
+    restrictedUriList.add("/v1/tenant/create");
+    restrictedUriList.add("/v1/tenant/info/update");
+    restrictedUriList.add("/v1/tenant/preference/update");
+    restrictedUriList.add("/v1/tenant/preference/add");
+
+    // stop
+
     // ---------------------------
     short var = 1;
     apiHeaderIgnoreMap.put("/v1/user/create", var);
@@ -93,6 +105,14 @@ public class RequestInterceptor {
     apiHeaderIgnoreMap.put("/v1/user/get/loginid", var);
     apiHeaderIgnoreMap.put("/v1/system/settings/get", var);
     apiHeaderIgnoreMap.put("/v1/system/settings/list", var);
+
+    // start
+    //changes for Camino Instance
+
+    // making tenant read API as public access for Camino Instance
+    restrictedUriList.add("/v1/tenant/read");
+
+    // stop
   }
 
   /**
