@@ -1,5 +1,6 @@
 package controllers.multitenant.validator;
 
+import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.util.CaminoJsonKey;
 import org.sunbird.common.models.util.JsonKey;
@@ -8,6 +9,8 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TenantRequestValidator extends BaseRequestValidator {
 
@@ -64,14 +67,27 @@ public class TenantRequestValidator extends BaseRequestValidator {
     /**
      * Validates request of get Tenant API.
      *
-     * @param request Request containing following parameters: homeUrl: The Home Url of the Organisation.
+     * @param headers header containing following parameters: homeUrl or organisationId: The Home Url or ID of the Organisation.
      */
-    public void validateGetTenantDetails(Request request) {
+    public String[] validateGetTenantDetails(Map<String,String> headers) {
 
-        validateParam(
-                (String) request.getRequest().get(JsonKey.HOME_URL),
-                ResponseCode.mandatoryParamsMissing,
-                JsonKey.HOME_URL);
+        String[] search=new String[2];
+
+        if(!StringUtils.isBlank(headers.get(JsonKey.ORGANISATION_ID))) {
+            search[0]=JsonKey.ORGANISATION_ID;
+            search[1]=headers.get(JsonKey.ORGANISATION_ID);
+        }
+        else if(!StringUtils.isBlank(headers.get(JsonKey.HOME_URL))) {
+            search[0]=JsonKey.HOME_URL;
+            search[1]=headers.get(JsonKey.HOME_URL);
+        }
+        else {
+            throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    MessageFormat.format(ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.HOME_URL+" or "+JsonKey.ORGANISATION_ID),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
+        return search;
     }
 
 

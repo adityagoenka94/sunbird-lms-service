@@ -194,7 +194,7 @@ POST /v1/otp/verify   @controllers.otp.OtpController.verifyOTP()
 POST /v1/tenant/create  @controllers.multitenant.TenantController.createTenant()
 PATCH /v1/tenant/info/update  @controllers.multitenant.TenantController.updateTenantInfo()
 PATCH /v1/tenant/preference/update  @controllers.multitenant.TenantController.updateTenantPreferenceDetails()
-GET /v1/tenant/read/:homeUrl  @controllers.multitenant.TenantController.getTenantDetailsByHomeUrl(homeUrl:String)
+GET /v1/tenant/read  @controllers.multitenant.TenantController.getTenantDetailsByHomeUrl()
 POST /v1/tenant/preference/add  @controllers.multitenant.TenantController.addTenantPreferenceDetails()
 
 # Stop

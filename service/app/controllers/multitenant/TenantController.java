@@ -1,12 +1,15 @@
 package controllers.multitenant;
 
 import controllers.BaseController;
+import org.apache.commons.lang.StringUtils;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.request.Request;
 import play.libs.F;
 import play.libs.F.Promise;
 import play.mvc.Result;
 import controllers.multitenant.validator.TenantRequestValidator;
+
+import java.util.Map;
 
 public class TenantController extends BaseController {
 
@@ -47,14 +50,15 @@ public class TenantController extends BaseController {
     }
 
 
-    public F.Promise<Result> getTenantDetailsByHomeUrl(String homeUrl) {
+    public F.Promise<Result> getTenantDetailsByHomeUrl() {
         ProjectLogger.log("getTenantDetails called.", LoggerEnum.DEBUG.name());
 
+        Map<String,String> headers =getAllRequestHeaders(request());
         try {
             Request request = createAndInitRequest(CaminoActorOperations.GET_TENANT_INFO.getValue());
-            request.put(JsonKey.HOME_URL, homeUrl);
 
-            new TenantRequestValidator().validateGetTenantDetails(request);
+            String[] data=new TenantRequestValidator().validateGetTenantDetails(headers);
+            request.put(data[0],data[1]);
 
             return actorResponseHandler(getActorRef(), request, timeout, null, request());
         } catch (Exception e) {
