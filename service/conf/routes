@@ -197,4 +197,10 @@ PATCH /v1/tenant/preference/update  @controllers.multitenant.TenantController.up
 GET /v1/tenant/read  @controllers.multitenant.TenantController.getTenantDetailsByHomeUrl()
 POST /v1/tenant/preference/add  @controllers.multitenant.TenantController.addTenantPreferenceDetails()
 
+# BATCH LIVE-SESSIONS API
+POST /v1/batch/livesession/create @controllers.batchmanagement.BatchLiveSessionController.createBatchLiveSessions()
+PATCH /v1/batch/livesession/update @controllers.batchmanagement.BatchLiveSessionController.updateBatchLiveSession()
+GET /v1/batch/livesession/read/:batchId @controllers.batchmanagement.BatchLiveSessionController.getBatchLiveSessions(batchId:String)
+DELETE /v1/batch/livesession/delete/:contentId @controllers.batchmanagement.BatchLiveSessionController.deleteBatchLiveSessions(contentId:String)
+
 # Stop

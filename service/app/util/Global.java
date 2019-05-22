@@ -236,6 +236,8 @@ public class Global extends GlobalSettings {
     // initialising env value when tenant api's are used
     else if (uri.startsWith("/v1/tenant")) {
       env = "tenant";
+    } else if (uri.startsWith("/v1/batch/livesession")) {
+      env = JsonKey.BATCH;
     }
 
     //stop

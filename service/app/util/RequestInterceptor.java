@@ -42,6 +42,10 @@ public class RequestInterceptor {
     restrictedUriList.add("/v1/tenant/preference/update");
     restrictedUriList.add("/v1/tenant/preference/add");
 
+    // making batch live session APIs as private access for Camino Instance
+    restrictedUriList.add("/v1/batch/livesession/create");
+    restrictedUriList.add("/v1/batch/livesession/update");
+    restrictedUriList.add("/v1/batch/livesession/delete");
     // stop
 
     // ---------------------------
@@ -110,8 +114,10 @@ public class RequestInterceptor {
     //changes for Camino Instance
 
     // making tenant read API as public access for Camino Instance
-    restrictedUriList.add("/v1/tenant/read");
+    apiHeaderIgnoreMap.put("/v1/tenant/read", var);
 
+    // making batch live session read API as public access for Camino Instance
+    apiHeaderIgnoreMap.put("/v1/batch/livesession/read", var);
     // stop
   }
 
