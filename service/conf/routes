@@ -191,11 +191,10 @@ POST /v1/otp/verify   @controllers.otp.OtpController.verifyOTP()
 
 # Api's for Camino Instance
 # MULTI-TENANT API
-POST /v1/tenant/create  @controllers.multitenant.TenantController.createTenant()
-PATCH /v1/tenant/info/update  @controllers.multitenant.TenantController.updateTenantInfo()
-PATCH /v1/tenant/preference/update  @controllers.multitenant.TenantController.updateTenantPreferenceDetails()
-GET /v1/tenant/read  @controllers.multitenant.TenantController.getTenantDetailsByHomeUrl()
-POST /v1/tenant/preference/add  @controllers.multitenant.TenantController.addTenantPreferenceDetails()
+POST /v1/multitenant/create  @controllers.multitenant.TenantController.createMultiTenantInfo()
+PATCH /v1/multitenant/update  @controllers.multitenant.TenantController.updateMultiTenantInfo()
+GET /v1/multitenant/read  @controllers.multitenant.TenantController.getMultiTenantInfoByHomeUrlorOrgId()
+DELETE /v1/multitenant/delete/:multiTenantId  @controllers.multitenant.TenantController.deleteMultiTenantInfoById(multiTenantId:String)
 
 # BATCH LIVE-SESSIONS API
 POST /v1/batch/livesession/create @controllers.batchmanagement.BatchLiveSessionController.createBatchLiveSessions()

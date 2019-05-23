@@ -9,15 +9,18 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 public class BatchLiveSessionValidator extends BaseRequestValidator {
 
     /**
      * Validates request of create Batch Live Session API.
      *
-     * @param request Request containing following parameters: batchId: The batchId of the course
-     *                for which Live Sessions are to be created and sessionDetail containing details of the content's live session of that course.
+     * @param request Request containing following parameters: batchId: The batchId of the course,
+     *                unitId: The unitId of the course,
+     *                contentId: The contentId of the live Session Content,
+     *                startTime: The start time of the Live Session,
+     *                endTime: The end time of the live Session,
+     *                liveSessionUrl: The URL of the Live Session.
      */
     // Validation for Two Mandatory Parameters : homeUrl and tenantPreferenceDetails
     public void validateCreateBatchLiveSessionRequest(Request request) {
@@ -52,7 +55,8 @@ public class BatchLiveSessionValidator extends BaseRequestValidator {
     /**
      * Validates request of update Batch Live Session API.
      *
-     * @param request Request containing following parameters: liveSessionId as id: The ID of the Content's Live Session which needs to be updated.
+     * @param request Request containing following parameters: liveSessionId or contentId: The ID of the Content's Live Session or
+     *               the contentId of the Live Session resource which needs to be updated.
      */
     // Validation for Mandatory Parameter : id (of Tenant_Info)
     public void validateUpdateBatchLiveSessionRequest(Request request) {
@@ -67,14 +71,6 @@ public class BatchLiveSessionValidator extends BaseRequestValidator {
         }
     }
 
-    /**
-     * Validates request of delete Batch Live Session API.
-     *
-     * @param request Request containing following parameters: id of the Content's Live Session or
-     *                                                         contentId or
-     *                                                         batchId.
-     *                TOP level being more specific will have higher presedence and the others will be neglected
-     */
 
 
 

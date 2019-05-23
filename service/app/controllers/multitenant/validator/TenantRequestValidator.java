@@ -9,77 +9,68 @@ import org.sunbird.common.request.Request;
 import org.sunbird.common.responsecode.ResponseCode;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-
 public class TenantRequestValidator extends BaseRequestValidator {
 
     /**
-     * Validates request of create Tenant API.
+     * Validates request of create Multi Tenant API.
      *
-     * @param request Request containing following parameters: homeUrl: The homeUrl of the organisation
-     *                for which Tenant is to be created and tenantPreferenceDetails containing Multi-Tenant themes.
+     * @param request Request containing following parameters: homeUrl(mandatory): The homeUrl of the organisation
+     *                for which Tenant is to be created , tenantPreferenceDetails(mandatory): containing Multi-Tenant themes and
+     *                framework: containing framework of the organisation.
      */
     // Validation for Two Mandatory Parameters : homeUrl and tenantPreferenceDetails
-    public void validateCreateTenantRequest(Request request) {
+    public void validateCreateMultiTenantInfoRequest(Request request) {
 
         validateParam(
                 (String) request.getRequest().get(JsonKey.HOME_URL),
                 ResponseCode.mandatoryParamsMissing,
                 JsonKey.HOME_URL);
-        if (request.getRequest().get(CaminoJsonKey.TENANT_PREFERENCE_DETAILS)==null) {
+        if (request.getRequest().get(CaminoJsonKey.PREFERENCE_DETAILS)==null) {
             throw new ProjectCommonException(
                     ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    MessageFormat.format(ResponseCode.mandatoryParamsMissing.getErrorMessage(), CaminoJsonKey.TENANT_PREFERENCE_DETAILS),
+                    MessageFormat.format(ResponseCode.mandatoryParamsMissing.getErrorMessage(), CaminoJsonKey.PREFERENCE_DETAILS),
                     ResponseCode.CLIENT_ERROR.getResponseCode());
         }
 
     }
 
     /**
-     * Validates request of update Tenant Info API.
+     * Validates request of update Multi Tenant Info API.
      *
-     * @param request Request containing following parameters: tenantInfoId as id: The ID of the Tenant Info.
+     * @param request Request containing following parameters: tenantInfoId(mandatory): The ID of the Tenant Info,
+     *                tenantPreferenceDetails and framework : if updation is needed.
      */
     // Validation for Mandatory Parameter : id (of Tenant_Info)
-    public void validateUpdateTenantInfoRequest(Request request) {
+    public void validateUpdateMultiTenantInfoRequest(Request request) {
 
-        validateParam(
-                (String) request.getRequest().get(JsonKey.ID),
-                ResponseCode.mandatoryParamsMissing,
-                JsonKey.ID);
+        if(!StringUtils.isBlank((String) request.getRequest().get(CaminoJsonKey.MULTI_TENANT_ID))) {
+        } else if(!StringUtils.isBlank((String) request.getRequest().get(JsonKey.HOME_URL))) {
+        } else {
+            throw new ProjectCommonException(
+                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
+                    MessageFormat.format(ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.HOME_URL+" or "+CaminoJsonKey.MULTI_TENANT_ID),
+                    ResponseCode.CLIENT_ERROR.getResponseCode());
+        }
     }
 
-    /**
-     * Validates request of update Tenant Preference Details API.
-     *
-     * @param request Request containing following parameters: tenantPreferenceDetailsId as id: The ID of the Tenant Preference Detail.
-     */
-    // Validation for Mandatory Parameter : id (of Tenant_Preference_Details)
-    public void validateUpdateTenantPreferenceDetailsRequest(Request request) {
-
-        validateParam(
-                (String) request.getRequest().get(JsonKey.ID),
-                ResponseCode.mandatoryParamsMissing,
-                JsonKey.ID);
-    }
 
     /**
-     * Validates request of get Tenant API.
+     * Validates request of get Multi Tenant API.
      *
-     * @param headers header containing following parameters: homeUrl or organisationId: The Home Url or ID of the Organisation.
+     * @param homeUrl,orgId : homeUrl or organisationId: The Home Url or ID of the Organisation.
+     *                      homeUrl has higher presedence over organisationId.
      */
-    public String[] validateGetTenantDetails(Map<String,String> headers) {
+    public String[] validateGetMultiTenantInfoRequest(String homeUrl, String orgId) {
 
         String[] search=new String[2];
 
-        if(!StringUtils.isBlank(headers.get(JsonKey.ORGANISATION_ID))) {
-            search[0]=JsonKey.ORGANISATION_ID;
-            search[1]=headers.get(JsonKey.ORGANISATION_ID);
-        }
-        else if(!StringUtils.isBlank(headers.get(JsonKey.HOME_URL))) {
+        if(!StringUtils.isBlank(homeUrl)) {
             search[0]=JsonKey.HOME_URL;
-            search[1]=headers.get(JsonKey.HOME_URL);
+            search[1]=homeUrl;
+        }
+        else if(!StringUtils.isBlank(orgId)) {
+            search[0]=JsonKey.ORGANISATION_ID;
+            search[1]=orgId;
         }
         else {
             throw new ProjectCommonException(

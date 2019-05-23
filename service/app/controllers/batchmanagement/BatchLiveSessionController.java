@@ -5,7 +5,6 @@ import controllers.batchmanagement.validator.BatchLiveSessionValidator;
 import org.sunbird.common.models.util.*;
 import org.sunbird.common.request.Request;
 import play.libs.F;
-import play.mvc.BodyParser;
 import play.mvc.Result;
 
 
