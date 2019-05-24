@@ -157,7 +157,7 @@ public class TenantControllerTest extends BaseControllerTest {
         if(tenantInfoId != null)
         innerMap.put(CaminoJsonKey.PREFERENCE_DETAILS,tenantPreferenceDetails);
         if(tenantPreferenceDetails != null)
-            innerMap.put(CaminoJsonKey.MULTI_TENANT_ID,tenantInfoId);
+            innerMap.put(CaminoJsonKey.TENANT_INFO_ID,tenantInfoId);
 
         requestMap.put(JsonKey.REQUEST, innerMap);
         

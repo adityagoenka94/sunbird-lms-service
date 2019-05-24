@@ -43,14 +43,10 @@ public class TenantRequestValidator extends BaseRequestValidator {
     // Validation for Mandatory Parameter : id (of Tenant_Info)
     public void validateUpdateMultiTenantInfoRequest(Request request) {
 
-        if(!StringUtils.isBlank((String) request.getRequest().get(CaminoJsonKey.MULTI_TENANT_ID))) {
-        } else if(!StringUtils.isBlank((String) request.getRequest().get(JsonKey.HOME_URL))) {
-        } else {
-            throw new ProjectCommonException(
-                    ResponseCode.mandatoryParamsMissing.getErrorCode(),
-                    MessageFormat.format(ResponseCode.mandatoryParamsMissing.getErrorMessage(), JsonKey.HOME_URL+" or "+CaminoJsonKey.MULTI_TENANT_ID),
-                    ResponseCode.CLIENT_ERROR.getResponseCode());
-        }
+        validateParam(
+                (String) request.getRequest().get(CaminoJsonKey.TENANT_INFO_ID),
+                ResponseCode.mandatoryParamsMissing,
+                CaminoJsonKey.TENANT_INFO_ID);
     }
 
 

@@ -37,9 +37,9 @@ public class RequestInterceptor {
 
     // making tenant APIs as private access for Camino Instance
     //private access requires x-authenticated-user-token as header for api access
-    restrictedUriList.add("/v1/multitenant/create");
-    restrictedUriList.add("/v1/multitenant/update");
-    restrictedUriList.add("/v1/multitenant/delete");
+    restrictedUriList.add("/v1/tenant/preference/create");
+    restrictedUriList.add("/v1/tenant/preference/update");
+    restrictedUriList.add("/v1/tenant/preference/delete");
 
     // making batch live session APIs as private access for Camino Instance
     restrictedUriList.add("/v1/batch/livesession/create");
@@ -113,7 +113,7 @@ public class RequestInterceptor {
     //changes for Camino Instance
 
     // making tenant read API as public access for Camino Instance
-    apiHeaderIgnoreMap.put("/v1/multitenant/read", var);
+    apiHeaderIgnoreMap.put("/v1/tenant/preference/read", var);
 
     // making batch live session read API as public access for Camino Instance
     apiHeaderIgnoreMap.put("/v1/batch/livesession/read", var);
