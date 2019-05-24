@@ -57,12 +57,12 @@ public class TenantController extends BaseController {
     }
 
 
-    public Promise<Result> deleteMultiTenantInfoById(String multiTenantId) {
+    public Promise<Result> deleteMultiTenantInfoById(String tenantInfoId) {
         ProjectLogger.log("deleteMultiTenantInfoById called.", LoggerEnum.DEBUG.name());
         return handleRequest(
                 CaminoActorOperations.DELETE_MULTI_TENANT_INFO.getValue(),
-                multiTenantId,
-                CaminoJsonKey.MULTI_TENANT_ID,
+                tenantInfoId,
+                CaminoJsonKey.TENANT_INFO_ID,
                 false);
     }
 
